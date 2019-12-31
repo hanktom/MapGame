@@ -12,8 +12,7 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 public class GameView extends View {
-    private float posX, posY = 400;
-
+    Monkey monkey;
     public GameView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
@@ -21,58 +20,44 @@ public class GameView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        if (monkey == null) {
+            monkey = new Monkey(this);
+        }
         Log.d("Game", "onDraw: " + getWidth() + "," + getHeight());
         Paint paint = new Paint();
         Paint paint0 = new Paint();
         paint0.setColor(0);
-        canvas.drawLine(400,0, 0,600, paint);
+//        canvas.drawLine(400,0, 0,600, paint);
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.monkey);
-        canvas.drawBitmap(bitmap, posX, posY, paint);
+        canvas.drawBitmap(bitmap, monkey.getX(), monkey.getY(), paint);
 //        for (int i=0; i<getHeight()-bitmap.getHeight(); i+=50) {
 //            canvas.drawBitmap(bitmap, 400, 300+i, paint);
 //        }
     }
     public void moveDown() {
-        if (posY < getHeight()-150) {
-            posY = posY + 50;
+        if (monkey.getY() < getHeight()-150) {
+            monkey.setDirection(Monkey.DIRECTION_DOWN);
             invalidate();
         }
     }
     public void moveUp() {
-        if (posY > 50) {
-            posY = posY - 50;
+        if (monkey.getY() > 50) {
+            monkey.setDirection(Monkey.DIRECTION_UP);
             invalidate();
         }
     }
     public void moveRight() {
-        if (posX < getWidth()-150) {
-            posX = posX + 50;
+        if (monkey.getX() < getWidth()-150) {
+            monkey.setDirection(Monkey.DIRECTION_RIGHT);
             invalidate();
         }
     }
 
     public void moveLeft() {
-        if (posX > 50) {
-            posX -= 50;
+        if (monkey.getX() > 50) {
+            monkey.setDirection(Monkey.DIRECTION_LEFT);
             invalidate();
         }
     }
 
-    public float getPosX() {
-        return posX;
-    }
-
-    public void setPosX(float posX) {
-        if (posX >= 0 && posX < getWidth()-100) {
-            this.posX = posX;
-        }
-    }
-
-    public float getPosY() {
-        return posY;
-    }
-
-    public void setPosY(float posY) {
-        this.posY = posY;
-    }
 }
