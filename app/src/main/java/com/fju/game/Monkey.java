@@ -6,6 +6,7 @@ public class Monkey extends Thread {
     public static final int DIRECTION_UP = 2;
     public static final int DIRECTION_DOWN = 3;
     public static final int DIRECTION_NONE = -1;
+    public static final int DIRECTION_NG = 9;
     private final GameView gameView;
     int x = 0;
     int y = 0;
@@ -17,11 +18,13 @@ public class Monkey extends Thread {
 
     @Override
     public void run() {
-        while(direction != DIRECTION_NONE) {
+        while(direction != DIRECTION_NONE && direction != DIRECTION_NG) {
             switch (direction) {
                 case DIRECTION_RIGHT:
                     if (x < gameView.getWidth()-200) {
                         x = x + 50;
+                    } else {
+                        direction = DIRECTION_NG;
                     }
                     gameView.invalidate();
                     try {
